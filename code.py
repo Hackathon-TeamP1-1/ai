@@ -4,11 +4,11 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 
-df = pd.read_csv("Data_loaded.csv")
+df = pd.read_csv("data_cleaned.csv")
 df['DATE'] = pd.to_datetime(df[['YEAR', 'MO', 'DY']].rename(columns={'YEAR': 'year', 'MO': 'month', 'DY': 'day'}))
 df.set_index('DATE', inplace=True)
 
-panel_area = 10
+panel_area = 1.7
 efficiency = 0.20
 sun_hours = 5
 
@@ -19,7 +19,7 @@ features = ["LAT", "LON","ALLSKY_SFC_SW_DWN", "WS2M", "T2M", "RH2M", "PRECTOTCOR
 target = ["E_produced"]
 
 scaler = MinMaxScaler()
-df[features] = scaler.fit_transform(df[features])
+df[features + target] = scaler.fit_transform(df[features + target])
 
 def create_sequences(data, target, seq_length=5):
     X, y = [], []
@@ -42,3 +42,7 @@ model = Sequential([
 
 model.compile(optimizer="adam", loss="mean_squared_error")
 model.fit(X_train, y_train, epochs=50, batch_size=16, validation_data=(X_test, y_test))
+
+import joblib
+joblib.dump(scaler, 'scaler.save')
+model.save('Energy_Forcasting.h5')
