@@ -1,7 +1,10 @@
-plotly==6.0.0
-numpy==1.26.2
-pandas==2.1.4
-matplotlib==3.8.2
-scikit-learn==1.3.0
-tensorflow==2.10
-flask==3.0.0
+tensorflow
+keras
+flask
+flask-restx
+scikit-learn
+numpy
+plotly
+matplotlib
+pandas
+joblib
